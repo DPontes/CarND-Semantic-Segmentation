@@ -1,6 +1,43 @@
 # Semantic Segmentation
-### Introduction
-In this project, you'll label the pixels of a road in images using a Fully Convolutional Network (FCN).
+## Introduction
+In this project, the pixels of a road in images are labeled using a Fully Connected Network (FCN).
+Apart from a few adjustments, the implementation in the ' main.py' is very similar to the original Udacity's repository.
+The network architecture (using Layer 3,4 and 7 from VGG and having skip connections and upsampling) are copied from examples and recommendations from the Udacity lectures, as well as the 'strides' and 'kernel_size' variables for the convolutional transpose layers.
+![FCN](./images/FCN.png)
+
+## Results
+Having done some passes with varying values for the parameters, I came to the quite acceptable results observed in the pictures below, given the following values:
+```
+EPOCHS = 20
+BATCH SIZE = 1
+LEARNING RATE = 0.0001
+DROPOUT = 0.75
+```
+### Result Images
+![um](./results/um_000010.png)
+![umm](./results/umm_000011.png)
+![uu](./results/uu_000023.png)
+
+### Average training losses for each of the 20 epochs
+![loss](./images/cost_per_epoch.png)
+
+## Shape of layers used
+```
+------------------
+shapes of layers:
+------------------
+layer3 --> (1, 20, 72, 256)
+layer4 --> (1, 10, 36, 512)
+layer7 --> (1, 5, 18, 4096)
+layer3 conv1x1 --> (1, 20, 72, 2)
+layer4 conv1x1 --> (1, 10, 36, 2)
+layer7 conv1x1--> (1, 5, 18, 2)
+decoderlayer1 transpose: layer7 k = 4 s = 2 --> (1, 10, 36, 2)
+decoderlayer2 skip: decoderlayer1 and layer4conv1x1 --> (1, 10, 36, 2)
+decoderlayer3 transpose: decoderlayer2 k = 4 s = 2 --> (1, 20, 72, 2)
+decoderlayer4 skip: decoderlayer3 and layer3conv1x1 --> (1, 20, 72, 2)
+decoderlayer5 transpose: decoderlayer4 k = 16 s = 8 --> (1, 160, 576, 2)
+```
 
 ### Setup
 ##### GPU
